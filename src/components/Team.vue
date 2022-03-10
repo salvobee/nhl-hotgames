@@ -2,9 +2,9 @@
     <span class="team">
         <span class="name">{{ team.name }}</span> 
     
-        <span class="scoring" :class="{ 'hidden': hide }">
-            <span class="goals scoring-stat">{{ team.goals }}</span>
-            <span class="sog scoring-stat">{{ team.sog }}</span>
+        <span class="scoring">
+            <span class="goals scoring-stat">{{ hide ? '-' : team.goals }}</span>
+            <span class="sog scoring-stat">{{ hide ? '-' : team.sog }}</span>
         </span>
     </span>
 </template>
@@ -18,22 +18,26 @@ defineProps([
 <style scoped>
 
 .team {
-    display: block; text-align: left
+    @apply flex my-6 items-center
 }
 
-
-.hidden {
-    color: white;
+.name {
+    @apply w-4/6 
 }
-.scoring,  .scoring-stat {
-    margin-left: 0.5em;
+
+.scoring {
+     @apply w-2/6
+}
+
+.scoring-stat {
+    @apply mx-2
 }
 
 .goals {
-    font-size: 2em;
+    @apply font-bold text-white bg-black py-2 px-3
 }
 
 .sog {
-    opacity: 0.5;
+    @apply text-gray-400 text-xs align-middle
 }
 </style>

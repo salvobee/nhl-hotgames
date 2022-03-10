@@ -1,19 +1,17 @@
 <template>
-<span class="container">
-<span class="teams">
-    
-    <Team :team="meta.home" :hide="hiddenScores" />
-    <Team :team="meta.away" :hide="hiddenScores" />
+    <span class="container">
+        <span class="teams">
+            <Team :team="meta.home" :hide="hiddenScores" />
+            <Team :team="meta.away" :hide="hiddenScores" />
+        </span>
+        
+        <RatingBox :points="meta.total.gamePoints" />
     </span>
-    <span class="rating">
-        {{ meta.total.gamePoints }}
-    </span>
-    </span>
-
 </template>
 
 <script setup>
 import Team from './Team.vue';
+import RatingBox from './RatingBox.vue';
 defineProps([
     'meta', 'hiddenScores'
 ])
@@ -21,10 +19,9 @@ defineProps([
 
 <style scoped>
 .container { 
-    display: block;
-    clear: both;
-    margin: 1em
+    @apply flex justify-start items-center gap-1
 }
-.teams { float: left }
-.rating { float: right; font-size: 5em }
+.teams { 
+    @apply ml-2 w-8/12 text-left leading-4
+}
 </style>
