@@ -7,13 +7,13 @@ import { computed } from 'vue';
     if (props.points >= 100) {
         return 'bg-gray-500 text-white';
     } else if (props.points >= 90) {
-        return 'bg-gray-300';
+        return 'bg-gray-300 text-gray-700';
     } else if (props.points >= 80) {
-        return 'text-gray-500';
+        return 'bg-gray-200 text-gray-500';
     } else if (props.points >= 70) {
-        return 'text-gray-400';
-    } else {
-        return 'text-gray-300';
+        return 'bg-gray-100 text-gray-400';
+    } else {    
+        return 'bg-gray-50 text-gray-300';
     }
 });
 </script>
