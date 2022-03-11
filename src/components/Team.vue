@@ -3,16 +3,19 @@
         <span class="name">{{ team.name }}</span> 
     
         <span class="scoring">
-            <span class="goals scoring-stat">{{ hide ? '-' : team.goals }}</span>
-            <span class="sog scoring-stat">{{ hide ? '-' : team.sog }}</span>
+            <span class="goals scoring-stat" :class="[scoreClass]">{{ hide ? '-' : team.goals }}</span>
+            <span class="sog scoring-stat"  :class="[scoreClass]">{{ hide ? '-' : team.sog }}</span>
         </span>
     </span>
 </template>
 
 <script setup>
-defineProps([
-    'team', 'hide'
+    import { computed } from 'vue';
+const props = defineProps([
+    'team', 'hide', 'wins'
 ])
+
+const scoreClass = computed(() => props.wins && !props.hide ? 'text-yellow-500' : 'text-white')
 </script>
 
 <style scoped>
@@ -34,10 +37,10 @@ defineProps([
 }
 
 .goals {
-    @apply font-bold text-white bg-black py-2 px-3
+    @apply max-w-max font-bold bg-black py-2 px-3 border-4 border-white
 }
 
 .sog {
-    @apply text-gray-400 text-xs align-middle
+    @apply text-gray-400 text-xs align-middle mx-1
 }
 </style>

@@ -5,18 +5,26 @@
     <header>
         <div class="heading">
             <h1>NHL Hot Games</h1> 
-            <h2>Lists games by a rating calculated on number of goals and shots on goal</h2>    
+            <h2>Lists daily games by a rating calculated on number of goals and shots on goal</h2>    
         </div>
     
         <div class="controls">
 
-            <button v-on:click="setPreviousDay" class="day-btn">«</button>
+            <button v-on:click="setPreviousDay" class="day-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
 
             <div class="date">
                 <input class="date-select" type="date" v-model="selectedDate" v-on:change="fetchGames">
             </div>
 
-            <button v-on:click="setNextDay" class="day-btn">»</button>
+            <button v-on:click="setNextDay" class="day-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
             
         </div>
 
@@ -30,8 +38,8 @@
     <main>
         <template v-if="gamesList.length > 0">
             <ul class="list">
-                <li class="matchup" v-for="game in gamesList">
-                <MatchUp :meta="game" :hidden-scores="hiddenScores" />
+                <li v-for="game in gamesList">
+                    <MatchUp :meta="game" :hidden-scores="hiddenScores" />
                 </li>
             </ul>
         </template>
@@ -128,9 +136,5 @@ h2 {
 
 .controls {
     @apply mt-5 flex gap-5 justify-center items-center
-}
-
-.matchup {
-     @apply border-b-2
 }
 </style>

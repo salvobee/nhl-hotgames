@@ -30,6 +30,8 @@ export default function useNhlScheduleApi() {
       .filter((gameData) => gameData.status.codedGameState !== "1")
       .map((gameData) => {
         return {
+          id: gameData.gamePk,
+          watchLink: `https://www.nhl.com/tv/${gameData.gamePk}`,
           away: {
             name: gameData.teams.away.team.name,
             goals: gameData.linescore.teams.away.goals,
