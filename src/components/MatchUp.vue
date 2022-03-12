@@ -20,7 +20,7 @@
             <span class="watchbox" :class="watchBoxDisplayClass">
                 <span class="watchlinkbox">
                     <button @click="openLink(meta.watchLink)" class="watchlink">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="watchicon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -29,8 +29,8 @@
                 </span>
 
                 <span class="watchlinkbox">
-                    <button  @click="openLink(highlightsVideoData)" class="watchlink">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <button  @click="openLink(highlightsVideoData.link)" class="watchlink">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="watchicon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -45,8 +45,8 @@
                 </span>
 
                 <span class="watchlinkbox">
-                    <button  @click="openLink(condensedVideoData)" class="watchlink">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <button  @click="openLink(condensedVideoData.link)" class="watchlink">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="watchicon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -95,8 +95,8 @@ const highlightsVideoData = ref('#');
 const condensedVideoData = ref('#');
 const displayDetail = ref(false);
 
-const openLink = (videoData) => { 
-    window.open(videoData.link, 'NHL Hot Game', 'width=1280, height=720') 
+const openLink = (videoLink) => { 
+    window.open(videoLink, 'NHL Hot Game', 'width=1280, height=720') 
 }
 
 const copyLink = (e, videoData) => {
@@ -166,16 +166,17 @@ const watchBoxDisplayClass = computed(() =>
     grid-cols-3 divide-x
      text-sm uppercase text-gray-400
 }
-.watchlink svg {
-    @apply mr-1
+.watchicon {
+    @apply mr-1 w-6 h-6 text-center w-full
 }
-.watchlink * {
-    @apply inline-block
+.watchlink {
+    @apply w-full flex-row items-center justify-center uppercase
 }
+
 .watchlinkbox {
-    @apply w-full align-middle text-center
+    @apply flex justify-center w-full align-middle text-center
 }
 .copylink {
-    @apply text-gray-100 float-right m-1.5 transition-all ease-in-out duration-150
+    @apply hidden sm:block text-gray-100 float-right m-1.5 transition-all ease-in-out duration-150
 }
 </style>
