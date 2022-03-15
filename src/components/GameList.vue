@@ -42,7 +42,7 @@
     <main>
         <template v-if="gamesList.length > 0">
             <ul class="list">
-                <li v-for="game in gamesList">
+                <li v-for="game in orderedGames" v-bind:key="game.id">
                     <MatchUp :meta="game" :hidden-scores="hiddenScores" />
                 </li>
             </ul>
@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import useNhlScheduleApi from '../hooks/useNhlScheduleApi';
 import useGameScoreAnalyzer from '../hooks/useGameScoreAnalyzer';
 import MatchUp from './MatchUp.vue';
@@ -95,6 +95,13 @@ const setPreviousDay = async () => {
 const gamesList = ref([])
 const hiddenScores = ref(true)
 const selectedDate = ref(getDefaultDate())
+const orderedGames = computed(() => gamesList.value.sort((a, b) =>
+            a.points > b.points
+            ? -1
+            : b.points > a.points
+            ? 1
+            : 0
+        ))
 
 const fetchGames = async () => {
     try {
@@ -106,18 +113,17 @@ const fetchGames = async () => {
 }
 
 const performFullAnalysis = async () => {
-    gamesList.value.forEach(async (item) => {
-        const scoreAnalysis = await analyzeScore(item);  
-        const gameRating = calulateGameRate(scoreAnalysis);  
-        item.points = item.points + gameRating
-       
-    }).sort((a, b) =>
-        a.points > b.points
-          ? -1
-          : b.points > a.points
-          ? 1
-          : 0
-      );
+    try {
+        const currentList = gamesList.value
+        
+        currentList.map(async (item) => {
+            const scoreAnalysis = await analyzeScore(item);  
+            const gameRating = calulateGameRate(scoreAnalysis);  
+            item.points = item.points + gameRating
+        });
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 onMounted(async () =>  { 
