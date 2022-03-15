@@ -11,7 +11,7 @@
         <div class="controls">
 
             <button v-on:click="setPreviousDay" class="day-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
             </button>
@@ -21,7 +21,7 @@
             </div>
 
             <button v-on:click="setNextDay" class="day-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
             </button>
@@ -31,6 +31,10 @@
         <div class="hide">
                 <input type="checkbox" id="checkbox" v-model="hiddenScores">
                 <label for="checkbox">Hide Scores</label>
+        </div>
+
+        <div class="calculate">
+            <button @click="performFullAnalysis" class="btn">Full Analysis</button>
         </div>
 
     </header>
@@ -55,9 +59,14 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import useNhlScheduleApi from '../hooks/useNhlScheduleApi';
+import useGameScoreAnalyzer from '../hooks/useGameScoreAnalyzer';
 import MatchUp from './MatchUp.vue';
+import useGameRatingCalculator from '../hooks/useGameRatingCalculator';
 
 const { getSchedule } = useNhlScheduleApi();
+const { analyzeScore } = useGameScoreAnalyzer();
+const { calulateGameRate } = useGameRatingCalculator()
+
 
 const getDefaultDate = () => {
     const today = new Date()
@@ -96,6 +105,21 @@ const fetchGames = async () => {
     }
 }
 
+const performFullAnalysis = async () => {
+    gamesList.value.forEach(async (item) => {
+        const scoreAnalysis = await analyzeScore(item);  
+        const gameRating = calulateGameRate(scoreAnalysis);  
+        item.points = item.points + gameRating
+       
+    }).sort((a, b) =>
+        a.points > b.points
+          ? -1
+          : b.points > a.points
+          ? 1
+          : 0
+      );
+}
+
 onMounted(async () =>  { 
    await fetchGames()
 })
@@ -118,12 +142,12 @@ h2 {
 .empty-state {
     @apply mt-5
 }
-.day-btn, .date-select {
+/* .date-select {
     @apply text-3xl
-}
+} */
 
 .day-btn {
-    @apply bg-black text-white p-3 rounded
+    @apply bg-black text-white  rounded p-1
 }
 
 .hide {
@@ -136,5 +160,11 @@ h2 {
 
 .controls {
     @apply mt-5 flex gap-5 justify-center items-center
+}
+.calculate{
+    @apply w-full text-center my-5
+}
+.btn {
+    @apply bg-black text-white px-4 py-2 text-sm
 }
 </style>

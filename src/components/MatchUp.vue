@@ -13,7 +13,7 @@
                     :wins="meta.away.goals > meta.home.goals" 
                 />
             </span>      
-            <RatingBox :points="meta.total.gamePoints" />
+            <RatingBox :is-calculating="meta.isCalculating" :points="meta.points" />
         </span>
         
         <span class="morebox">
@@ -59,7 +59,6 @@
                         </svg>
                     </button>
                 </span>
-
             </span>
 
             <button @click="showDetails" class="more">
@@ -81,7 +80,7 @@
 </template>
 
 <script setup>
-import useNhlGameDetailsApi from '../hooks/useNhlGameDetailsApi';
+import useNhlGameMediaApi from '../hooks/useNhlGameMediaApi';
 import Team from './Team.vue';
 import RatingBox from './RatingBox.vue';
 import { computed, ref } from 'vue';
@@ -89,7 +88,7 @@ const props = defineProps([
     'meta', 'hiddenScores'
 ])
 
-const { getGameDetails } = useNhlGameDetailsApi()
+const { getGameDetails } = useNhlGameMediaApi()
 
 const highlightsVideoData = ref('#');
 const condensedVideoData = ref('#');

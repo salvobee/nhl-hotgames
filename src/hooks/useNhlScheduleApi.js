@@ -3,13 +3,10 @@ import axios from "axios";
 export default function useNhlScheduleApi() {
   const API_URL =
     "https://statsapi.web.nhl.com/api/v1/schedule?expand=schedule.linescore";
-  const GOAL_POINTS_MULTIPLIER = 5;
-  const SOG_POINTS_MULTIPLIER = 0.75;
+  const GOAL_POINTS_MULTIPLIER = 2.5;
+  const SOG_POINTS_MULTIPLIER = 1;
 
   const getSchedule = async (date) => {
-    // const dateString = `${date.getFullYear()}-${
-    //   date.getMonth() + 1
-    // }-${date.getDate()}`;
     const responseData = await (
       await axios.get(`${API_URL}&date=${date}`)
     ).data;
@@ -27,10 +24,18 @@ export default function useNhlScheduleApi() {
     };
 
     return games
-      .filter((gameData) => gameData.status.codedGameState !== "1")
+      .filter((gameData) => gameData.status.codedGameState === "7")
       .map((gameData) => {
+        const points = Math.ceil(
+          gameData.teams.away.score * GOAL_POINTS_MULTIPLIER +
+            gameData.teams.home.score * GOAL_POINTS_MULTIPLIER +
+            gameData.linescore.teams.away.shotsOnGoal * SOG_POINTS_MULTIPLIER +
+            gameData.linescore.teams.home.shotsOnGoal * SOG_POINTS_MULTIPLIER
+        );
         return {
           id: gameData.gamePk,
+          points: points,
+          isCalculating: false,
           watchLink: `https://www.nhl.com/tv/${gameData.gamePk}`,
           away: {
             name: gameData.teams.away.team.name,

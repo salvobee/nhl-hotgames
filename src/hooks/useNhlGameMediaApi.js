@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default function useNhlGameDetailsApi() {
+export default function useNhlGameMediaApi() {
   const HD_LINK_KEY = "HTTP_CLOUD_WIRED_60";
 
   const getVideoLink = (allMedias, videoTitleKey) => {

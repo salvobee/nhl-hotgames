@@ -2,7 +2,7 @@
 <script setup>
     import { computed } from 'vue';
 
-    const props = defineProps(['points'])
+    const props = defineProps(['points', 'isCalculating'])
     const alignmentClasses = computed(() => {
     if (props.points >= 100) {
         return 'bg-gray-500 text-white';
@@ -20,7 +20,12 @@
 
 <template>
     <span class="rating" :class="[alignmentClasses]">
-        {{ points }}
+        <template v-if="isCalculating">
+            ...
+        </template>
+        <template v-else>
+            {{ points }}
+        </template>
     </span>
 </template>
 
