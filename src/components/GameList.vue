@@ -62,10 +62,12 @@ import useNhlScheduleApi from '../hooks/useNhlScheduleApi';
 import useGameScoreAnalyzer from '../hooks/useGameScoreAnalyzer';
 import MatchUp from './MatchUp.vue';
 import useGameRatingCalculator from '../hooks/useGameRatingCalculator';
+import useGameFeatures from "../hooks/useGameFeatures";
 
 const { getSchedule } = useNhlScheduleApi();
 const { analyzeScore } = useGameScoreAnalyzer();
 const { calulateGameRate } = useGameRatingCalculator()
+const { extractFeatures } = useGameFeatures()
 
 
 const getDefaultDate = () => {
@@ -117,9 +119,11 @@ const performFullAnalysis = async () => {
         const currentList = gamesList.value
         
         currentList.map(async (item) => {
-            const scoreAnalysis = await analyzeScore(item);  
+            const scoreAnalysis = await analyzeScore(item);
             const gameRating = calulateGameRate(scoreAnalysis);  
             item.points = item.points + gameRating
+            item.features = extractFeatures(item, scoreAnalysis)
+            item.isFullyAnalyzed = true
         });
     } catch (e) {
         console.log(e)

@@ -35,7 +35,9 @@ export default function useNhlScheduleApi() {
         return {
           id: gameData.gamePk,
           points: points,
+          features: [],
           isCalculating: false,
+          isFullyAnalyzed: false,
           watchLink: `https://www.nhl.com/tv/${gameData.gamePk}`,
           away: {
             name: gameData.teams.away.team.name,
